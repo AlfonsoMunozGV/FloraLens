@@ -1,0 +1,40 @@
+# Build output and IDE state
+**/bin/
+**/obj/
+.vs/
+**/.vs/
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+*.tlog
+*.log
+
+# Local configuration and credentials
+**/appsettings.local.json
+**/appsettings.Development.json
+**/appsettings.Production.json
+**/secrets.json
+**/azure-credentials.json
+.env
+.env.*
+!.env.example
+*.pfx
+*.pem
+*.key
+*.cert
+
+# Editor and operating-system files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Package and test artifacts
+packages/
+*.nupkg
+TestResults/
+*.trx
+*.coverage

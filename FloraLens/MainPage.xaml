@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FloraLens.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout 
+            Spacing="20" 
+            Padding="20">
+            <Label Text="Clasificador de Imágenes"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="#2196F3" />
+
+            <Grid ColumnDefinitions="*,*" 
+                  ColumnSpacing="10"
+                  HorizontalOptions="Fill">
+
+                <Button x:Name="CameraButton"
+                        Text="Cámara"
+                        Clicked="OnCameraButtonClicked"
+                        BackgroundColor="#2196F3"
+                        TextColor="White"
+                        CornerRadius="10"
+                        ImageSource="camarafotografica.png"
+                        HeightRequest="60"
+                        FontSize="16"
+                        Grid.Column="0"/>
+
+                <Button x:Name="GalleryButton"
+                        Text="Galería"
+                        Clicked="OnGalleryButtonClicked"
+                        BackgroundColor="#4CAF50"
+                        TextColor="White"
+                        CornerRadius="10"
+                        ImageSource="galeria.png"
+                        HeightRequest="60"
+                        FontSize="16"
+                        Grid.Column="1"/>
+            </Grid>
+
+            <!-- Área de imagen -->
+            <Frame BorderColor="#E0E0E0"
+                   BackgroundColor="#F9F9F9"
+                   Padding="10"
+                   CornerRadius="10"
+                   HeightRequest="400">
+
+                <Grid>
+                    <!-- Imagen seleccionada -->
+                    <Image x:Name="SelectedImage"
+                           Aspect="AspectFit"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Source="placeholder.png">
+
+                        <!-- Gestos táctiles -->
+                        <Image.GestureRecognizers>
+                            <!-- Doble toque -->
+                            <TapGestureRecognizer 
+                                NumberOfTapsRequired="2"
+                                Tapped="OnDoubleTapTapped" />
+
+                            <!-- Pan (arrastre) -->
+                            <PanGestureRecognizer 
+                                PanUpdated="OnPanGestureUpdated" />
+                        </Image.GestureRecognizers>
+
+
+                    </Image>
+
+                    <!-- Mensaje cuando no hay imagen -->
+                    <Label x:Name="NoImageLabel"
+                           Text="No hay imagen seleccionada"
+                           FontSize="16"
+                           TextColor="red"
+                           HorizontalOptions="Center"
+                           VerticalOptions="End"
+                           IsVisible="True" />
+
+                    <!-- Indicador de zoom -->
+                    <Label x:Name="ZoomLabel"
+                           Text="Zoom: 1.0x"
+                           FontSize="12"
+                           TextColor="#666"
+                           HorizontalOptions="Start"
+                           VerticalOptions="Start"
+                           Margin="10"
+                           BackgroundColor="#FFFFFF"
+                           Padding="5,2"
+                           IsVisible="False"/>
+                </Grid>
+            </Frame>
+
+            <!-- Botón Micrófono -->
+            <Button x:Name="MicrophoneButton"
+                    Text="Usar Micrófono"
+                    Clicked="OnMicrophoneButtonClicked"
+                    BackgroundColor="#FF9800"
+                    TextColor="White"
+                    CornerRadius="10"
+                    ImageSource="microfonoestudio.png"
+                    HeightRequest="60"
+                    FontSize="16"
+                    HorizontalOptions="Fill">
+            </Button>
+
+            <!-- Área de resultados de voz -->
+            <Frame BorderColor="#FF9800"
+                   BackgroundColor="#FFF3E0"
+                   Padding="15"
+                   CornerRadius="10"
+                   IsVisible="False"
+                   x:Name="VoiceResultFrame">
+
+                <VerticalStackLayout Spacing="10">
+                    <Label Text=" Resultado de Voz"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="#FF9800"
+                           HorizontalOptions="Center" />
+
+                    <Label x:Name="VoiceResultLabel"
+                           Text="Esperando reconocimiento..."
+                           FontSize="14"
+                           TextColor="#333"
+                           HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Área de análisis de Azure -->
+            <Frame BorderColor="#2196F3"
+                   BackgroundColor="#E3F2FD"
+                   Padding="15"
+                   CornerRadius="10"
+                   IsVisible="False"
+                   x:Name="AzureResultFrame">
+
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Análisis de Azure Custom Vision"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="#2196F3"
+                           HorizontalOptions="Center" />
+
+                    <Grid ColumnDefinitions="Auto,*" 
+                          RowDefinitions="Auto,Auto,Auto"
+                          RowSpacing="8"
+                          ColumnSpacing="12">
+
+                        <Label Text="Tu predicción:" TextColor="#666"
+                               Grid.Row="0" Grid.Column="0"
+                               FontSize="14"
+                               FontAttributes="Bold"/>
+                        <Label x:Name="UserPredictionLabel"
+                               Text="-" TextColor="#666"
+                               Grid.Row="0" Grid.Column="1"
+                               FontSize="14"/>
+
+                        <Label Text="Azure predice:"
+                               Grid.Row="1" Grid.Column="0"
+                               FontSize="14" TextColor="#666"
+                               FontAttributes="Bold"/>
+                        <Label x:Name="AzurePredictionLabel"
+                               Text="-"
+                               Grid.Row="1" Grid.Column="1"
+                               FontSize="14" TextColor="#666"/>
+
+                        <Label Text="Confianza:"
+                               Grid.Row="2" Grid.Column="0"
+                               FontSize="14" TextColor="#666" FontAttributes="Bold"/>
+                        <Label x:Name="ConfidenceLabel"
+                               Text="-"
+                               Grid.Row="2" Grid.Column="1"
+                               FontSize="14"
+                               FontAttributes="Bold" TextColor="#666"/>
+                    </Grid>
+
+                    <!-- Resultado final -->
+                    <Label x:Name="FinalResultLabel"
+                           Text=""
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center"
+                           Margin="0,10,0,0"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Botón para analizar con Azure -->
+            <Button x:Name="AnalyzeButton"
+                    Text="Analizar con Azure AI"
+                    Clicked="OnAnalyzeButtonClicked"
+                    BackgroundColor="#2196F3"
+                    TextColor="White"
+                    CornerRadius="10"
+                    HeightRequest="50"
+                    FontSize="16"
+                    HorizontalOptions="Fill"
+                    IsVisible="False"/>
+
+            <!-- Botón para limpiar todo -->
+            <Button x:Name="ClearButton"
+                    Text="Limpiar Todo y Empezar de Nuevo"
+                    Clicked="OnClearButtonClicked"
+                    BackgroundColor="#9C27B0"
+                    TextColor="White"
+                    CornerRadius="10"
+                    HeightRequest="50"
+                    FontSize="16"
+                    HorizontalOptions="Fill"
+                    IsVisible="False"/>
+
+            <!-- Información del estado -->
+            <Label x:Name="StatusLabel"
+                   Text="Selecciona una imagen para comenzar"
+                   FontSize="14"
+                   TextColor="#666"
+                   HorizontalOptions="Center" />
+
+            
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

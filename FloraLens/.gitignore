@@ -1,0 +1,59 @@
+# Build outputs
+bin/
+obj/
+
+# User-specific files
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio
+.vs/
+*.suo
+*.tlog
+*.log
+
+# Local configuration overrides may contain credentials. Never commit them.
+appsettings.local.json
+appsettings.Development.json
+appsettings.Production.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# NuGet
+packages/
+*.nupkg
+
+# MAUI
+Platforms/*/bin/
+Platforms/*/obj/
+
+# Azure / Secrets (never commit these)
+**/secrets.json
+**/azure-credentials.json
+*.pfx
+*.pem
+*.key
+*.cert
+
+# Logs
+*.log
+logs/
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+
+# Temporary files
+*.tmp
+*.temp
+~*
